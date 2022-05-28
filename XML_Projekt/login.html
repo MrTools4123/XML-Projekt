@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="japan, login"/>
+    <meta name="description" content="Japan - Login"/>
+    <meta name="author" content="Marko Potkonjak"/>
+    <link rel="stylesheet" href="bootstrap-4.5.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="images/logo.ico" type="image/x-icon"/> 
+</head>
+<body>
+	<div id="alert" style="position: absolute; top: 200px; left: 100px;">
+	</div>
+	<div class="wrap form">
+		<h3>Login</h3>
+		<input type="text" placeholder="username" id="userText" size="25"
+				onkeydown = "if(event.keyCode == 13) fun1(document.getElementById('userText').value, document.getElementById('passText').value)">
+						<br>
+		<input type="text" placeholder="password" id="passText" size="25"				
+				onkeydown = "if(event.keyCode == 13) fun1(document.getElementById('userText').value, document.getElementById('passText').value)">
+						<br><br>
+		<input type="button" value="Submit" 
+			onclick="fun1(document.getElementById('userText').value, document.getElementById('passText').value)">
+			<p><br><a href="register.html">Register?</a></p>
+	</div>
+	<script type="text/javascript">
+		var submit = new XMLHttpRequest();			
+		function fun1(user, pass)
+		{
+			urlAddress = "login.php?op=login&username=" + user + "&password=" + pass;
+			submit.open("GET", urlAddress, true);		
+			submit.onreadystatechange = fun2;
+			submit.send(null);
+		}
+		function fun2()
+		{
+			if(submit.readyState == 4)
+			{
+				if(submit.status == 200)
+				{	
+					document.getElementById("alert").innerHTML = submit.responseText;
+					messageReceived = submit.responseText.split('%');
+					if(messageReceived[0] == "Success")
+					{
+						window.location = messageReceived[1];
+					}
+					else
+					{
+						alert("Wrong credentials. Please try again.");
+					}
+				}
+			}	
+		}
+	</script>
+</body>
+</html>

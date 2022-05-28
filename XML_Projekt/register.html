@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Register</title>
+    <meta charset="utf-8"/>
+    <meta name="keywords" content="japan, register"/>
+    <meta name="description" content="Japan - Register"/>
+    <meta name="author" content="Marko Potkonjak"/>
+    <link rel="stylesheet" href="bootstrap-4.5.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" href="images/logo.ico" type="image/x-icon"/> 
+</head>
+	<body>
+		<div id="alert" style="position: absolute; top: 000px; left: 100px;">
+		</div>
+		<div class="wrap form">
+			<h3>Register</h3>
+			<input type="text" placeholder="username" id="userText" size="25"
+					onkeydown = "if(event.keyCode == 13) 
+									fun1(document.getElementById('userText').value, 
+												  document.getElementById('passText').value)">
+							<br>
+			<input type="text" placeholder="password" id="passText" size="25"				
+					onkeydown = "if(event.keyCode == 13) 
+									fun1(document.getElementById('userText').value, 
+												  document.getElementById('passText').value)">
+							<br><br>
+			<input type="button" value="Registriraj" 
+				onclick="fun1(document.getElementById('userText').value, 
+									   document.getElementById('passText').value)">
+			<p><br><a href="login.html">Login?</a></p>
+		</div>
+		<script type="text/javascript">
+			var submit_fun = new XMLHttpRequest();	
+			var getfun = new XMLHttpRequest();
+			var timer = null;
+			function timer()
+			{  
+				timer = setInterval("fun2Pause()", 3000 );
+			}
+			function fun2Pause()
+			{
+				clearInterval(timer);
+				window.location = receivedInfo[1];	
+			}
+			function fun1(user, pass)
+			{
+				urlAddress = "Register.php?op=sendInfo&username=" + user + "&password=" + pass;	
+				submit_fun.open("GET", urlAddress, true);
+				submit_fun.onreadystatechange = fun2;		
+				submit_fun.send(null);
+			}
+			function fun2()
+			{
+				if(submit_fun.readyState == 4)
+				{
+					if(submit_fun.status == 200)
+					{
+						receivedInfo = submit_fun.responseText.split('%');
+						document.getElementById("alert").innerHTML = "<a style='color:red;'>" + receivedInfo[0] + "</a><br>";
+						
+						if(receivedInfo[0] == "User created.")
+						{
+							timer();
+						}
+					}
+				}	
+			}
+		</script>
+	</body>
+	</html>
